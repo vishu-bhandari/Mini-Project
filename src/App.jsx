@@ -1,9 +1,21 @@
 import React from "react";
+import Navbar from "./Components/Navbar";
+import SearchComponent from "./Components/SearchComponent";
+import AboutSection from "./Components/AboutSection";
+import Alpine from "alpinejs";
+
+// Initialize Alpine.js globally for the app
+if (typeof window !== "undefined") {
+  window.Alpine = Alpine;
+  Alpine.start();
+}
 
 export default function App() {
   return (
-    <div className="text-center p-10 text-2xl font-bold text-blue-500">
-      Welcome to My Landing Page!
-    </div>
+    <>
+      <Navbar />
+      <SearchComponent />
+      <AboutSection />
+    </>
   );
 }
