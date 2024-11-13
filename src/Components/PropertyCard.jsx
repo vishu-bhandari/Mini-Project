@@ -1,8 +1,17 @@
+// PropertyCard.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PropertyCard = ({ imgSrc, isNew, name, profession, price, reviews }) => {
+  const navigate = useNavigate(); // useNavigate hook to navigate programmatically
+
+  const handleHireNow = () => {
+    console.log("Navigating to /hire"); // Check if this log appears when button is clicked
+    navigate('/hire'); // Navigate to the /hire page
+  };
+
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-2xl w-80 m-4">
+    <div className="bg-white rounded-lg overflow-hidden shadow-2xl w-full sm:w-80 md:w-72 lg:w-80 m-4">
       <img
         className="h-60 w-full object-cover object-center"
         src={imgSrc}
@@ -33,7 +42,10 @@ const PropertyCard = ({ imgSrc, isNew, name, profession, price, reviews }) => {
           </span>
           <span className="ml-2 text-gray-600 text-sm">{reviews} reviews</span>
         </div>
-        <button className="mt-4 bg-secondary text-white text-sm font-semibold py-2 px-4 rounded-md">
+        <button
+          onClick={handleHireNow} // Trigger navigation on button click
+          className="mt-4 bg-secondary text-white text-sm font-semibold py-2 px-4 rounded-md"
+        >
           Hire Now
         </button>
       </div>

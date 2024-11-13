@@ -1,21 +1,16 @@
 import React from "react";
-import Navbar from "./Components/Navbar";
-import SearchComponent from "./Components/SearchComponent";
-import AboutSection from "./Components/AboutSection";
-import Alpine from "alpinejs";
+import { Routes, Route } from "react-router-dom";
 
-// Initialize Alpine.js globally for the app
-if (typeof window !== "undefined") {
-  window.Alpine = Alpine;
-  Alpine.start();
-}
+import HirePage from "./Components/HirePage/HirePage"; // Import HirePage component
+import HomePage from "./Components/HomePage";
 
 export default function App() {
   return (
     <>
-      <Navbar />
-      <SearchComponent />
-      <AboutSection />
+      <Routes>
+        <Route path="/" element={<HomePage />} />{" "}
+        <Route path="/hire" element={<HirePage />} />
+      </Routes>
     </>
   );
 }
