@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
   return (
     <>
       <nav className=" pl-2 bg-white bg-gradient-to-r from-[#0A192F] via-[#0A192F] to-teal-800 fixed w-full z-20 top-0 start-0">
@@ -11,7 +14,11 @@ export default function Navbar() {
 
           {/* Button and Mobile Menu */}
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <button type="button" className="text-white bg-secondary hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-secondary dark:hover:bg-secondary dark:focus:ring-secondary">
+            <button 
+              type="button" 
+              className="text-white bg-secondary hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-secondary dark:hover:bg-secondary dark:focus:ring-secondary"
+              onClick={() => navigate('/Dashboard')} // Navigate to /Dashboard on click
+            >
               Get started
             </button>
 

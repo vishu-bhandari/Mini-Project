@@ -4,16 +4,14 @@ import Footer from "../Footer";
 
 import HireSection from "./HireSection";
 
-
 const HirePage = () => {
   return (
-   <>
-  <Navbar/>
- <HireSection/>
+    <>
+      <Navbar />
+      <HireSection />
 
-  <Footer/>
-    
-   </>
+      <Footer />
+    </>
   );
 };
 
