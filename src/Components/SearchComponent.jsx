@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropertyCard from './PropertyCard';
+import getAllCourses from '../functions/getAllCourses';
 
 const SearchComponent = () => {
   const [cardsToShow, setCardsToShow] = useState(3); // State to control the number of cards to show
   const [showAllCards, setShowAllCards] = useState(false); // State to toggle showing all cards
+  const [data, setData] = useState([]);
 
   const cardData = [
     {
@@ -48,10 +50,28 @@ const SearchComponent = () => {
     }
   ];
 
+  useEffect(() =>{
+    const fetchData = async() =>{
+      const result = await getAllCourses();
+      // console.log(result);
+      const formattedResult = result.map(course => formatCourse(course));
+      console.log(formattedResult);
+      
+
+      
+      setData(formattedResult)
+    }
+    fetchData();
+  },[])
+
   // Function to handle the "Show More" button click
   const handleShowMore = () => {
     setShowAllCards(true); // Show all cards
-    setCardsToShow(cardData.length); // Show all available cards
+    setCardsToShow(data.length); // Show all available cards
+    console.log(data);
+    
+    // console.log();
+    
   };
 
   // Function to handle the "Hide" button click
@@ -59,6 +79,20 @@ const SearchComponent = () => {
     setShowAllCards(false); // Hide extra cards
     setCardsToShow(3); // Show only the initial 3 cards
   };
+
+  function formatCourse(courseArray) {
+    return {
+        courseId: courseArray[0],
+        price: courseArray[1],
+        title: courseArray[2],
+        description: courseArray[3],
+        videoCid: courseArray[4],
+        thumbnailCid: courseArray[5],
+        creator: courseArray[6],
+        purchaseCount: courseArray[7],
+        revenue: courseArray[8]
+    };
+}
 
   return (
     <div className="bg-gradient-to-r from-[#0A192F] via-[#0A192F] to-teal-800">
@@ -110,7 +144,7 @@ const SearchComponent = () => {
 
           {/* Property Cards Section */}
           <div className="flex flex-wrap justify-center mt-10 gap-4">
-            {cardData.slice(0, cardsToShow).map((card, index) => (
+            {data.slice(0, cardsToShow).map((card, index) => (
               <PropertyCard key={index} {...card} />
             ))}
           </div>

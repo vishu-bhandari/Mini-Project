@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import lighthouse from '@lighthouse-web3/sdk'
+import { lighthouseApiKey } from '../../utils/config'
+import uploadContent from "../../functions/uploadContent";
 
 const CourseUploadSection = () => {
   const [courseName, setCourseName] = useState("");
@@ -6,6 +9,7 @@ const CourseUploadSection = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
+  const [video, setVideo] = useState(null);
   const [notifications, setNotifications] = useState({
     newCourseRelease: false,
     courseUpdate: false,
@@ -19,8 +23,14 @@ const CourseUploadSection = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    const thumbnailData = await lighthouse.upload( [image], lighthouseApiKey);
+    const videoData = await lighthouse.upload([video], lighthouseApiKey);
+    const upload = await uploadContent(price, courseName, courseDescription, thumbnailData.data.Hash, videoData.data.Hash)
+
+
+
     // Handle the form submission
     console.log("Course uploaded:", {
       courseName,
@@ -28,6 +38,7 @@ const CourseUploadSection = () => {
       category,
       price,
       image,
+      video,
       notifications,
     });
   };
@@ -84,7 +95,7 @@ const CourseUploadSection = () => {
           </div>
 
           {/* Category */}
-          <div className="sm:col-span-1">
+          {/* <div className="sm:col-span-1">
             <label
               htmlFor="category"
               className="block text-sm font-medium text-primary"
@@ -104,7 +115,7 @@ const CourseUploadSection = () => {
               <option value="Marketing">Marketing</option>
               <option value="Business">Business</option>
             </select>
-          </div>
+          </div> */}
 
           {/* Price */}
           <div className="sm:col-span-1">
@@ -130,7 +141,7 @@ const CourseUploadSection = () => {
               htmlFor="image"
               className="block text-sm font-medium text-primary"
             >
-              Course Image
+              Course Thumbnail
             </label>
             <input
               type="file"
@@ -139,6 +150,24 @@ const CourseUploadSection = () => {
               className="block w-full text-sm text-gray-500 border-gray-300 rounded-md"
             />
           </div>
+
+
+          <div className="sm:col-span-2">
+            <label
+              htmlFor="image"
+              className="block text-sm font-medium text-primary"
+            >
+              Select Course
+            </label>
+            <input
+              type="file"
+              id="video"
+              onChange={(e) => setVideo(e.target.files[0])}
+              className="block w-full text-sm text-gray-500 border-gray-300 rounded-md"
+            />
+          </div>
+
+
         </div>
 
         {/* Notifications Section */}

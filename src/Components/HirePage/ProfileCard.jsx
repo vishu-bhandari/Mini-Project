@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import buyCourse from '../../functions/buyCourse';
 
-const ProfileCard = () => {
+const ProfileCard = ({courseId, name, role, description, skills, imageUrl, price}) => {
   const [coupon, setCoupon] = useState('');
 
   const handleCouponChange = (e) => {
@@ -12,26 +13,34 @@ const ProfileCard = () => {
     console.log("Coupon applied:", coupon);
   };
 
+  const handleBuy = async() =>{
+    const purchase = buyCourse(courseId, price)
+  }
+
   return (
     <div className=" md:min-h-screen h-full flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full overflow-hidden transition-all duration-300 hover:shadow-orange-500/50">
         <div className="relative h-32 bg-gradient-to-r from-primary to-secondary">
           <img
-            src="https://images.unsplash.com/photo-1728996777138-66a369255f18?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGluZmx1ZW5jZXJ8ZW58MHx8MHx8fDA%3D"
+            src={imageUrl}
             alt="John Doe"
             className="object-cover absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-24 h-24 rounded-full border-4 border-white transition-transform duration-300 hover:scale-105"
           />
         </div>
         <div className="pt-16 pb-6 px-6 text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-1">Alex Johnson</h1>
-          <p className="text-secondary font-semibold mb-4">Graphic Designer</p>
+          <h1 className="text-2xl font-bold text-gray-800 mb-1">{name}</h1>
+          <p className="text-secondary font-semibold mb-4">{role}</p>
           <p className="text-gray-600 mb-4">
-          Creative graphic designer specializing in visual storytelling, brand identity, and digital art. Passionate about bringing ideas to life through design.
+            {description}
           </p>
+
+          <div className="my-1 mb-2">
+          <span className="text-lg font-bold">{price?.toString()} wei</span>
+          </div>
           
           
           {/* Buy Now Button */}
-          <button className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors duration-300 mb-6">
+          <button onClick={handleBuy} className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors duration-300 mb-6">
             Buy Now
           </button>
 
@@ -55,11 +64,11 @@ const ProfileCard = () => {
           </div>
 
           {/* Tags */}
-          <div className="flex justify-center gap-4 mb-6">
+          {/* <div className="flex justify-center gap-4 mb-6">
             <span className="text-xs font-semibold text-gray-600">Creative Design</span>
             <span className="text-xs font-semibold text-gray-600">Branding</span>
             <span className="text-xs font-semibold text-gray-600">Illustration</span>
-          </div>
+          </div> */}
 
           {/* Coupon Input Field */}
           <div className="flex items-center justify-center mb-6">

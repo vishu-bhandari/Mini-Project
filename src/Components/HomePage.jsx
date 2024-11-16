@@ -13,7 +13,7 @@ function HomePage() {
     <>
      <Navbar />
       <SearchComponent />
-      <AboutSection />
+      {/* <AboutSection /> */}
       <Pricing />
       <Banner />
       <Footer/>

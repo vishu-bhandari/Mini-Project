@@ -1,4 +1,6 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import getProfile from "../../functions/getprofile";
+import registerUser from "../../functions/registerUser";
 
 const ProfileSection = () => {
   // Static data for users
@@ -45,71 +47,140 @@ const ProfileSection = () => {
     },
   ];
 
+  const [exists, setExists] = useState(false)
+  const [userName, setUserName] = useState('')
+  const [email, setEmail] = useState('')
+
+  const handleSubmit = async(e) =>{
+    e.preventDefault();
+  const res = registerUser(userName, email)
+
+  }
+
+  useEffect(() =>{
+    const getUserProfile = async() =>{
+
+      try {
+        const [username, email, exists] = await getProfile();
+        if (!exists) {
+            console.log("Profile not registered for this address.");
+            // Prompt user to register a profile
+        } else {
+          setExists(true);
+          setUserName(username);
+          setEmail(email);
+            console.log("Profile exists:", { username, email });
+            // Display profile data in the UI
+        }
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+    }    
+
+    }
+    getUserProfile()
+  }, [exists])
+
   return (
     <div className="divide-y divide-teal-500  lg:col-span-9 p-6 bg-slate-100   h-full">
-      {/* Summary section */}
-      <div className="pb-6">
-        <h2 className="text-lg font-medium leading-6 text-secondary ">User Statistics</h2>
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-secondary  rounded-lg p-4 shadow-md">
-            <p className="text-sm font-bold text-white">Total Users</p>
-            <p className="mt-1 text-2xl font-semibold text-white">{users.length}</p>
-          </div>
-        </div>
-      </div>
+
 
       {/* Users table */}
       <div className="mt-6">
-        <h2 className="text-lg font-medium leading-6 text-secondary">Users</h2>
+        <h2 className="text-lg font-medium leading-6 text-secondary">Profile</h2>
+
+        {
+          exists?
+          (
+            <div className="mt-4 overflow-x-auto">
+            <div className="sm:col-span-2">
+            <label
+              htmlFor="course-name"
+              className="block text-sm font-medium text-primary"
+            >
+              User Name
+            </label>
+            <input
+              type="text"
+              id="course-name"
+              value={userName}
+              // onChange={(e) => setCourseName(e.target.value)}
+              className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+              disabled
+            />
+          </div>
+
+          <div className="sm:col-span-2">
+            <label
+              htmlFor="course-name"
+              className="block text-sm font-medium text-primary"
+            >
+              E-mail
+            </label>
+            <input
+              type="text"
+              id="course-name"
+              value={email}
+              // onChange={(e) => setCourseName(e.target.value)}
+              className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+              disabled
+            />
+          </div>
+            </div>
+          ):
+
+          (
+            <form onSubmit={handleSubmit}>
         <div className="mt-4 overflow-x-auto">
-          <table className="min-w-full divide-y divide-teal-500">
-            <thead className="bg-gray-50">
-              <tr>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider"
-                >
-                  Username
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider"
-                >
-                  First Name
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider"
-                >
-                  Last Name
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider"
-                >
-                  Email
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider"
-                >
-                  Company
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.username}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.firstName}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.lastName}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.company}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+
+
+          <div className="sm:col-span-2">
+            <label
+              htmlFor="course-name"
+              className="block text-sm font-medium text-primary"
+            >
+              User Name
+            </label>
+            <input
+              type="text"
+              id="course-name"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          <div className="sm:col-span-2">
+            <label
+              htmlFor="course-name"
+              className="block text-sm font-medium text-primary"
+            >
+              E-mail
+            </label>
+            <input
+              type="text"
+              id="course-name"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          <button
+              type="submit"
+              className="inline-flex justify-center py-2 px-4 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-md shadow-sm hover:bg-primary-focus focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary mt-5"
+            >
+              Submit Profile
+            </button>
+
+
         </div>
+        </form>
+          )
+        }
+
+        
       </div>
     </div>
   );
